@@ -1,21 +1,41 @@
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        if (nums.size() == 0)return { -1,-1 };
-        int left = 0, right = nums.size() - 1, leftt = 0;
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] >= target)right = mid;
-            else left = mid + 1;
+        if (nums.empty()) return {-1, -1};
+        
+        int l = 0, r = nums.size() - 1;
+        int tag1 = -1, tag2 = -1;
+        
+        // —∞’“◊Ó”“±ﬂΩÁ
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] >= target) {
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
         }
-        if (nums[left] != target)return{ -1,-1 };
-        else leftt = left;
-        left = 0, right = nums.size() - 1;
-        while (left < right) {
-            int mid = left + (right - left + 1) / 2;
-            if (nums[mid] <= target)left = mid;
-            else right = mid - 1;
+        if (l < nums.size() && nums[l] == target) {
+            tag1 = l;
+        } else {
+            return {-1, -1};
         }
-        return{ leftt,right };
+        
+        // ÷ÿ÷√◊Û”“±ﬂΩÁ£¨—∞’“◊Ó◊Û±ﬂΩÁ
+        r = nums.size() - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] <= target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        tag2 = r;
+        if (r < 0 || nums[r] != target) {
+            tag2 = -1;
+        }
+        
+        return {tag1, tag2};
     }
 };
